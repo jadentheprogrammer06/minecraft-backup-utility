@@ -8,6 +8,7 @@
 PC_USERNAME=`whoami`
 WORKING_DIR=`pwd`
 MINECRAFT_RUNNING=`pgrep minecraft`
+DATETIME=$(date +"_%T_%m_%d_%y")
 # directory variables. Modify these to suit your needs.
 DOTMINECRAFT="/home/${PC_USERNAME}/.minecraft"
 BACKUP_FOLDER="/home/${PC_USERNAME}/Documents/backup-dotminecraft"
@@ -23,6 +24,6 @@ then
     [[ -d ${BACKUP_FOLDER} ]] && echo "${BACKUP_FOLDER} exists. this is your backup folder." || BACKUP_NOT_FOUND=1
     [[ ${BACKUP_NOT_FOUND} == 1 ]] && echo "${BACKUP_FOLDER} non-existent; creating ${BACKUP_FOLDER} folder." && mkdir -p ${BACKUP_FOLDER}
     echo "copying .minecraft folder and its files..."
-    [[ ${BACKUP_NOT_FOUND} == 0 ]] && rm ${BACKUP_FOLDER}/* -r && echo "Removed previous backup."
+    [[ -d ${BACKUP_FOLDER}/.minecraft ]] && mv ${BACKUP_FOLDER}/.minecraft ${BACKUP_FOLDER}/.minecraft${DATETIME} && echo "Renamed previous backup to ${BACKUP_FOLDER}/.minecraft${DATETIME}"
     cp ${DOTMINECRAFT} ${BACKUP_FOLDER}/.minecraft -r && echo '.minecraft folder copied successfully. Note: enable "show hidden files" in your file-browser to view your .minecraft folder.'
 fi
